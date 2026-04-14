@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Life Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NEXUS <span>TRACKER</span></h1>
+            <p>Optimize Your Daily Life</p>
+        </header>
+
+        <section class="overall-section">
+            <h2>Overall Synergy</h2>
+            <div class="progress-wrapper large">
+                <svg class="progress-ring" width="160" height="160">
+                    <circle class="ring-bg" cx="80" cy="80" r="70"></circle>
+                    <circle class="ring-progress" id="ring-overall" cx="80" cy="80" r="70"></circle>
+                </svg>
+                <div class="percentage" id="perc-overall">0%</div>
+            </div>
+        </section>
+
+        <section class="categories-grid">
+            <div class="card">
+                <h3>Health</h3>
+                <div class="progress-wrapper">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                        <circle class="ring-progress" id="ring-health" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="percentage" id="perc-health">0%</div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="input-health" min="0" max="10" placeholder="/10">
+                    <button onclick="updateCategory('health')">SYNC</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Work</h3>
+                <div class="progress-wrapper">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                        <circle class="ring-progress" id="ring-work" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="percentage" id="perc-work">0%</div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="input-work" min="0" max="10" placeholder="/10">
+                    <button onclick="updateCategory('work')">SYNC</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Learning</h3>
+                <div class="progress-wrapper">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                        <circle class="ring-progress" id="ring-learning" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="percentage" id="perc-learning">0%</div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="input-learning" min="0" max="10" placeholder="/10">
+                    <button onclick="updateCategory('learning')">SYNC</button>
+                </div>
+            </div>
+        </section>
+        
+        <div class="logs">
+            <button onclick="showMonthlyLogs()">View Monthly Logs (Console)</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
