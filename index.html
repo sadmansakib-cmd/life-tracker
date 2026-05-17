@@ -1,83 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Life Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WELCOME TO THE SPACESHIP</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>NEXUS <span>TRACKER</span></h1>
-            <p>Optimize Your Daily Life</p>
+  <!-- Toasts -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen" class="full-page-auth">
+    <div class="auth-card">
+      <h2>COMMANDER LOGIN</h2>
+      <input type="email" id="auth-email" placeholder="Email Address" autocomplete="email">
+      <input type="password" id="auth-pass" placeholder="Password" autocomplete="current-password">
+
+      <div class="auth-actions">
+        <button class="primary-btn" onclick="handleAuth('login')">Enter Spaceship</button>
+        <button class="secondary-btn" onclick="handleAuth('signup')">Initialize New Commander</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app-container" id="main-dashboard" style="display:none;">
+    <aside class="sidebar">
+      <!-- Logo -->
+      <div class="logo">
+        <div class="logo-icon" aria-hidden="true">
+          <!-- Simple spaceship/rocket mark -->
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <path fill="currentColor"
+              d="M12 2c3.9 2.2 6.5 6.2 6.7 10.7l-2.7 2.7c-1 .3-2.1.6-3.2.7l-1.5 4.2-1.5-4.2c-1.1-.1-2.2-.4-3.2-.7L4.3 12.7C5.5 7.1 8.1 4.2 12 2Zm0 6.2a2.1 2.1 0 1 0 0 4.2a2.1 2.1 0 0 0 0-4.2Z"/>
+          </svg>
+        </div>
+
+        <div class="logo-text">
+          <h2>THE SPACESHIP</h2>
+          <div class="logo-sub">by <span class="maker">SADMAN</span></div>
+        </div>
+      </div>
+
+      <nav class="menu" id="side-menu">
+        <a href="#" data-page="dashboard" onclick="switchPage('dashboard'); return false;">Dashboard</a>
+        <a href="#" data-page="analytics" onclick="switchPage('analytics'); return false;">Analytics</a>
+        <a href="#" data-page="weekly" onclick="switchPage('weekly'); return false;">Weekly Logs</a>
+        <a href="#" data-page="settings" onclick="switchPage('settings'); return false;">Settings</a>
+      </nav>
+
+      <div class="user-profile">
+        <div class="avatar" id="user-avatar">U</div>
+        <div class="user-meta">
+          <span class="user-name">Commander</span>
+          <span class="user-email" id="user-email">—</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- ===================== DASHBOARD PAGE ===================== -->
+      <div id="dashboard-page">
+        <header class="top-nav">
+          <div>
+            <h1 class="greeting">Welcome back, Commander</h1>
+            <p class="date" id="current-date"></p>
+          </div>
+          <div class="actions">
+            <button onclick="saveAndSync()">Manual Sync</button>
+          </div>
         </header>
 
-        <section class="overall-section">
-            <h2>Overall Synergy</h2>
+        <div class="dashboard-grid">
+          <div class="card overall-card">
+            <h3>Overall Synergy</h3>
             <div class="progress-wrapper large">
-                <svg class="progress-ring" width="160" height="160">
-                    <circle class="ring-bg" cx="80" cy="80" r="70"></circle>
-                    <circle class="ring-progress" id="ring-overall" cx="80" cy="80" r="70"></circle>
+              <svg class="progress-ring" width="160" height="160">
+                <circle class="ring-bg" cx="80" cy="80" r="70"></circle>
+                <circle class="ring-progress" id="ring-overall" cx="80" cy="80" r="70"></circle>
+              </svg>
+              <div class="percentage" id="perc-overall">0%</div>
+            </div>
+            <p class="note">Bonus from Work/Comm included.</p>
+          </div>
+
+          <div class="card log-card">
+            <div class="card-header">
+              <h3>Study Log</h3>
+              <div class="mini-ring">
+                <svg width="60" height="60">
+                  <circle class="ring-bg" cx="30" cy="30" r="25"></circle>
+                  <circle class="ring-progress" id="ring-study" cx="30" cy="30" r="25"></circle>
                 </svg>
-                <div class="percentage" id="perc-overall">0%</div>
+                <span id="perc-study">0%</span>
+              </div>
             </div>
-        </section>
+            <div class="inputs-grid">
+              <div class="input-item"><label>University</label><input type="number" id="study-uni" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Online (High)</label><input type="number" id="study-online" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Self (Highest)</label><input type="number" id="study-self" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Others</label><input type="number" id="study-others" min="0" max="10" placeholder="0"></div>
+            </div>
+          </div>
 
-        <section class="categories-grid">
-            <div class="card">
-                <h3>Health</h3>
-                <div class="progress-wrapper">
-                    <svg class="progress-ring" width="120" height="120">
-                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
-                        <circle class="ring-progress" id="ring-health" cx="60" cy="60" r="50"></circle>
-                    </svg>
-                    <div class="percentage" id="perc-health">0%</div>
-                </div>
-                <div class="input-group">
-                    <input type="number" id="input-health" min="0" max="10" placeholder="/10">
-                    <button onclick="updateCategory('health')">SYNC</button>
-                </div>
+          <div class="card log-card">
+            <div class="card-header">
+              <h3>Skill & Project</h3>
+              <div class="mini-ring">
+                <svg width="60" height="60">
+                  <circle class="ring-bg" cx="30" cy="30" r="25"></circle>
+                  <circle class="ring-progress" id="ring-skills" cx="30" cy="30" r="25"></circle>
+                </svg>
+                <span id="perc-skills">0%</span>
+              </div>
             </div>
+            <div class="inputs-grid">
+              <div class="input-item"><label>Programming</label><input type="number" id="skills-prog" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>IoT</label><input type="number" id="skills-iot" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Online Presence</label><input type="number" id="skills-presence" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Work (Bonus)</label><input type="number" id="skills-work" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Comm (Bonus)</label><input type="number" id="skills-comm" min="0" max="10" placeholder="0"></div>
+            </div>
+          </div>
 
-            <div class="card">
-                <h3>Work</h3>
-                <div class="progress-wrapper">
-                    <svg class="progress-ring" width="120" height="120">
-                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
-                        <circle class="ring-progress" id="ring-work" cx="60" cy="60" r="50"></circle>
-                    </svg>
-                    <div class="percentage" id="perc-work">0%</div>
-                </div>
-                <div class="input-group">
-                    <input type="number" id="input-work" min="0" max="10" placeholder="/10">
-                    <button onclick="updateCategory('work')">SYNC</button>
-                </div>
+          <div class="card log-card">
+            <div class="card-header">
+              <h3>Health Log</h3>
+              <div class="mini-ring">
+                <svg width="60" height="60">
+                  <circle class="ring-bg" cx="30" cy="30" r="25"></circle>
+                  <circle class="ring-progress" id="ring-health" cx="30" cy="30" r="25"></circle>
+                </svg>
+                <span id="perc-health">0%</span>
+              </div>
             </div>
+            <div class="inputs-grid">
+              <div class="input-item"><label>Sleep</label><input type="number" id="health-sleep" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Water</label><input type="number" id="health-water" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Diet</label><input type="number" id="health-diet" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Exercise</label><input type="number" id="health-exercise" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Supplements</label><input type="number" id="health-supps" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label class="danger">Cheat Meals (-)</label><input type="number" id="health-cheat" min="0" max="10" placeholder="0"></div>
+            </div>
+          </div>
 
-            <div class="card">
-                <h3>Learning</h3>
-                <div class="progress-wrapper">
-                    <svg class="progress-ring" width="120" height="120">
-                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
-                        <circle class="ring-progress" id="ring-learning" cx="60" cy="60" r="50"></circle>
-                    </svg>
-                    <div class="percentage" id="perc-learning">0%</div>
-                </div>
-                <div class="input-group">
-                    <input type="number" id="input-learning" min="0" max="10" placeholder="/10">
-                    <button onclick="updateCategory('learning')">SYNC</button>
-                </div>
+          <div class="card log-card">
+            <div class="card-header">
+              <h3>Discipline Log</h3>
+              <div class="mini-ring">
+                <svg width="60" height="60">
+                  <circle class="ring-bg" cx="30" cy="30" r="25"></circle>
+                  <circle class="ring-progress" id="ring-discipline" cx="30" cy="30" r="25"></circle>
+                </svg>
+                <span id="perc-discipline">0%</span>
+              </div>
             </div>
-        </section>
-        
-        <div class="logs">
-            <button onclick="showMonthlyLogs()">View Monthly Logs (Console)</button>
+            <div class="inputs-grid">
+              <div class="input-item"><label>Morning Routine</label><input type="number" id="discipline-morning" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>No Delay</label><input type="number" id="discipline-delay" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Social Media</label><input type="number" id="discipline-social" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Planning</label><input type="number" id="discipline-plan" min="0" max="10" placeholder="0"></div>
+            </div>
+          </div>
+
+          <div class="card log-card">
+            <div class="card-header">
+              <h3>Real Talk Log</h3>
+              <div class="mini-ring">
+                <svg width="60" height="60">
+                  <circle class="ring-bg" cx="30" cy="30" r="25"></circle>
+                  <circle class="ring-progress" id="ring-realtalk" cx="30" cy="30" r="25"></circle>
+                </svg>
+                <span id="perc-realtalk">0%</span>
+              </div>
+            </div>
+            <div class="inputs-grid">
+              <div class="input-item"><label>Prayer</label><input type="number" id="realtalk-prayer" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Moral Eval.</label><input type="number" id="realtalk-moral" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Finance</label><input type="number" id="realtalk-finance" min="0" max="10" placeholder="0"></div>
+              <div class="input-item"><label>Mental Peace</label><input type="number" id="realtalk-mental" min="0" max="10" placeholder="0"></div>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <script src="script.js"></script>
+      <!-- ===================== WEEKLY LOGS PAGE ===================== -->
+      <div id="weekly-page" style="display:none;">
+        <header class="top-nav page-top">
+          <div>
+            <h1 class="greeting">Mission Logs</h1>
+            <p class="date neon-sub">Past 7 Days Transmission Data</p>
+          </div>
+        </header>
+
+        <div class="weekly-summary-grid">
+          <div class="card summary-card">
+            <h4>Avg Synergy</h4>
+            <span class="neon-text" id="weekly-avg">--%</span>
+          </div>
+          <div class="card summary-card">
+            <h4>Best Day</h4>
+            <span class="neon-text green" id="weekly-best">--</span>
+          </div>
+          <div class="card summary-card">
+            <h4>System Status</h4>
+            <span class="neon-text green">Active</span>
+          </div>
+        </div>
+
+        <div class="card log-table-container">
+          <table class="spaceship-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Overall</th>
+                <th>Study</th>
+                <th>Skills</th>
+                <th>Health</th>
+                <th>Discipline</th>
+                <th>Real Talk</th>
+              </tr>
+            </thead>
+            <tbody id="weekly-table-body">
+              <tr>
+                <td colspan="7" class="table-muted">Waiting for Firebase Data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===================== ANALYTICS PAGE ===================== -->
+      <div id="analytics-page" style="display:none;">
+        <header class="top-nav page-top">
+          <div>
+            <h1 class="greeting">Mission Analytics</h1>
+            <p class="date neon-sub" id="analytics-subtitle">Performance Spectrum</p>
+          </div>
+
+          <div class="actions analytics-actions">
+            <select id="analytics-range" class="select-control" title="Range">
+              <option value="7">Last 7 Days</option>
+              <option value="14">Last 14 Days</option>
+              <option value="30">Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+            </select>
+            <button onclick="generateSpaceshipAnalytics()">Refresh</button>
+          </div>
+        </header>
+
+        <div class="weekly-summary-grid analytics-summary">
+          <div class="card summary-card">
+            <h4>Avg Overall</h4>
+            <span class="neon-text" id="an-avg">--%</span>
+          </div>
+          <div class="card summary-card">
+            <h4>Best Day</h4>
+            <span class="neon-text green" id="an-best">--</span>
+          </div>
+          <div class="card summary-card">
+            <h4>Trend</h4>
+            <span class="neon-text" id="an-trend">--</span>
+          </div>
+          <div class="card summary-card">
+            <h4>Latest</h4>
+            <span class="neon-text" id="an-latest">--%</span>
+          </div>
+        </div>
+
+        <div class="card analytics-controls">
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="tg-overall" checked> <span>Overall</span></label>
+            <label class="toggle"><input type="checkbox" id="tg-study" checked> <span>Study</span></label>
+            <label class="toggle"><input type="checkbox" id="tg-skill" checked> <span>Skill</span></label>
+            <label class="toggle"><input type="checkbox" id="tg-health" checked> <span>Health</span></label>
+            <label class="toggle"><input type="checkbox" id="tg-discipline" checked> <span>Discipline</span></label>
+            <label class="toggle"><input type="checkbox" id="tg-realtalk" checked> <span>Real Talk</span></label>
+          </div>
+          <div class="muted small" id="analytics-hint">Tip: toggle bars to compare systems.</div>
+        </div>
+
+        <div class="card chart-container">
+          <canvas id="spaceshipChart"></canvas>
+        </div>
+      </div>
+
+      <!-- ===================== SETTINGS PAGE ===================== -->
+      <div id="settings-page" style="display:none;">
+        <header class="top-nav page-top">
+          <div>
+            <h1 class="greeting">Settings</h1>
+            <p class="date neon-sub">Commander Controls & Data Tools</p>
+          </div>
+        </header>
+
+        <div class="settings-grid">
+          <div class="card settings-card">
+            <h3>Commander Profile</h3>
+            <div class="kv">
+              <div class="k">Email</div>
+              <div class="v" id="st-email">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">UID</div>
+              <div class="v mono" id="st-uid">—</div>
+            </div>
+            <div class="settings-actions">
+              <button class="btn-outline" id="btn-logout">Log Out</button>
+            </div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Today Controls (Local)</h3>
+            <p class="muted">Clears only today's inputs stored in your browser. Cloud logs remain safe.</p>
+            <div class="settings-actions">
+              <button class="btn-primary" id="btn-clear-today">Clear Today Inputs</button>
+              <button class="btn-outline" id="btn-clear-cache">Clear Local Cache</button>
+            </div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Export Logs</h3>
+            <p class="muted">Download your cloud logs for backup or spreadsheets.</p>
+            <div class="settings-actions">
+              <button class="btn-outline" id="btn-export-json">Export JSON</button>
+              <button class="btn-outline" id="btn-export-csv">Export CSV</button>
+            </div>
+          </div>
+
+          <div class="card settings-card danger-zone">
+            <h3>Danger Zone</h3>
+            <p class="muted">This action affects cloud data (still only today’s log).</p>
+            <div class="settings-actions">
+              <button class="btn-danger" id="btn-delete-today-cloud">Delete Today Cloud Log</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Firebase + Chart -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
